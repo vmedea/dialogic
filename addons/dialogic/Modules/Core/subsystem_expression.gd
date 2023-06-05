@@ -19,9 +19,11 @@ func execute_string(string:String, default = null) -> Variant:
 	var regex: RegEx = RegEx.create_from_string('{(\\w.*)}')
 	
 	for res in regex.search_all(string):
-		var value: String = str(dialogic.VAR.get_variable(res.get_string()))
-		if !value.is_valid_float():
+		var value: Variant = dialogic.VAR.get_variable(res.get_string())
+		if typeof(value) == TYPE_STRING:
 			value = '"'+value+'"'
+		else:
+			value = str(value)
 		string = string.replace(res.get_string(), value)
 	
 	var expr := Expression.new()
